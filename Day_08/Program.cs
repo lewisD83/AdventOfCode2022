@@ -96,13 +96,6 @@ class Day8
 		int maxY = lines.Length;
 		int answer = 0;
 		int answer2 = 0;
-		/*
-			30373
-			25512
-			65332
-			33549
-			35390
-		 */
 
 		Grid grid = new Grid(lines, maxX, maxY);
 
@@ -150,53 +143,3 @@ class Day8
 		Console.WriteLine(answer2);
 	}
 }
-
-
-//// Check all up neighbours
-//while ((neighbourHeight = (grid.GetNeighbour(x, y, 0, -i) - '0')) != -1)
-//{
-//	if (height <= neighbourHeight)
-//	{
-//		uVisible = false;
-//		break;
-//	}
-
-//	i++;
-//}
-
-//// Check all down neighbours
-//i = 1;
-//while ((neighbourHeight = (grid.GetNeighbour(x, y, 0, i) - '0')) != -1)
-//{
-//	if (height <= neighbourHeight)
-//	{
-//		dVisible = false;
-//		break;
-//	}
-//	i++;
-//}
-
-
-//// Check all left neighbours
-//i = 1;
-//while ((neighbourHeight = (grid.GetNeighbour(x, y, -i, 0) - '0')) != -1)
-//{
-//	if (height <= neighbourHeight)
-//	{
-//		lVisible = false;
-//		break;
-//	}
-//	i++;
-//}
-
-//// Check all right neighbours
-//i = 1;
-//while ((neighbourHeight = (grid.GetNeighbour(x, y, i, 0) - '0')) != -1)
-//{
-//	if (height <= neighbourHeight)
-//	{
-//		rVisible = false;
-//		break;
-//	}
-//	i++;
-//}
