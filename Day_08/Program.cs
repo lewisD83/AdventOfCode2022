@@ -11,22 +11,22 @@ class Day8
 		public string[] grid;
 		public int maxX;
 		public int maxY;
-		
-		public Grid() 
+
+		public Grid ()
 		{
 			grid = new string[0];
 			maxX = 0;
 			maxY = 0;
 		}
 
-		public Grid(string[] grid, int maxX, int maxY)
+		public Grid (string[] grid, int maxX, int maxY)
 		{
 			this.grid = grid;
 			this.maxX = maxX;
 			this.maxY = maxY;
 		}
 
-		public char GetNeighbour(int x, int y, int deltaX, int deltaY) 
+		public char GetNeighbour (int x, int y, int deltaX, int deltaY)
 		{
 			int newX = x + deltaX;
 			int newY = y + deltaY;
@@ -34,39 +34,68 @@ class Day8
 			if (newX < 0 || newX >= maxX)
 				return '/';
 
-			if (newY < 0 || newY >= maxY)	
+			if (newY < 0 || newY >= maxY)
 				return '/';
 
 			return grid[newY][newX];
 		}
 	}
 
-	public static bool CheckAllNeighbours(Grid grid, int x, int y, int i, int j)
+	public static bool CheckAllNeighbours (Grid grid, int x, int y, int i, int j)
 	{
 		int height = grid.grid[y][x] - '0';
 		int neighbourHeight;
+		int a = i;
+		int b = j;
 
 		// Check all up neighbours
-		while ((neighbourHeight = (grid.GetNeighbour(x, y, i, j) - '0')) != -1)
+		while ((neighbourHeight = (grid.GetNeighbour(x, y, a, b) - '0')) != -1)
 		{
 			if (height <= neighbourHeight)
 			{
 				return false;
 			}
 
-			i += i;
-			j += j;
+			a += i;
+			b += j;
 		}
 
 		return true;
 	}
 
-	static public void Main(String[] args)
+	public static int CheckScenicScore (Grid grid, int x, int y, int i, int j)
 	{
-		string[] lines = File.ReadAllLines("Input.txt");
+		int height = grid.grid[y][x] - '0';
+		int neighbourHeight;
+		int a = i;
+		int b = j;
+
+		int numTrees = 0;
+
+		// Check all up neighbours
+		while ((neighbourHeight = (grid.GetNeighbour(x, y, a, b) - '0')) != -1)
+		{
+			numTrees++;
+
+			if (height <= neighbourHeight)
+			{
+				break;
+			}
+
+			a += i;
+			b += j;
+		}
+
+		return numTrees;
+	}
+
+	static public void Main (String[] args)
+	{
+		string[] lines = File.ReadAllLines("Input2.txt");
 		int maxX = lines[0].Length;
 		int maxY = lines.Length;
 		int answer = 0;
+		int answer2 = 0;
 		/*
 			30373
 			25512
@@ -81,32 +110,44 @@ class Day8
 		{
 			for (int x = 0; x < maxX; x++)
 			{
-				if (y == 0 || y == (maxY - 1))
-					continue;
-
-				if (x == 0 || x == (maxX - 1))
-					continue;
-
 				int height = grid.grid[y][x] - '0';
 				bool uVisible = CheckAllNeighbours(grid, x, y, 0, -1);
 				bool dVisible = CheckAllNeighbours(grid, x, y, 0, 1);
 				bool lVisible = CheckAllNeighbours(grid, x, y, -1, 0);
 				bool rVisible = CheckAllNeighbours(grid, x, y, 1, 0);
-				int goo = 4;
 
-				if( uVisible ||
+				if (uVisible ||
 					dVisible ||
 					lVisible ||
 					rVisible)
 				{
 					answer++;
 				}
-				else
+
+				if (y == 0 || y == (maxY - 1))
+					continue;
+
+				if (x == 0 || x == (maxX - 1))
+					continue;
+
+				int uScore = CheckScenicScore(grid, x, y, 0, -1);
+				int dScore = CheckScenicScore(grid, x, y, 0, 1);
+				int lScore = CheckScenicScore(grid, x, y, -1, 0);
+				int rScore = CheckScenicScore(grid, x, y, 1, 0);
+
+				int score = uScore * dScore * lScore * rScore;
+				if (score > answer2)
 				{
-					int foo = 4;
+					answer2 = score;
 				}
+
+				int foo = 5;
+
 			}
 		}
+
+		Console.WriteLine(answer);
+		Console.WriteLine(answer2);
 	}
 }
 
